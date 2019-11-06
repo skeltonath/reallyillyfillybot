@@ -23,12 +23,10 @@ function initializeClient(clientID, clientSecret) {
     );    
 }
 
-function searchTracks(searchTerm) {
+function searchAlbums(searchTerm) {
     return new Promise((resolve, reject) => {
-        console.log("search term:", searchTerm)
         spotify.searchAlbums(searchTerm, {limit: 5})
             .then(function(data) {
-                console.log('Search by %s', searchTerm, data.body);
                 const albums = data.body.albums.items.map(i => {
                     return {
                         id: i.id,
@@ -46,4 +44,4 @@ function searchTracks(searchTerm) {
     });
 }
 
-module.exports = { initializeClient, searchTracks };
+module.exports = { initializeClient, searchAlbums };

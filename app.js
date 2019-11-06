@@ -21,6 +21,9 @@ const {
     PORT
 } = process.env;
 
+// Set up Spotify API
+Spotify.initializeClient(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET);
+
 // Set up express API
 const app = express();
 const port = PORT || 3000;
@@ -28,15 +31,12 @@ const port = PORT || 3000;
 app.get('/', (req, res) => res.send('Hello World!'));
 app.get('/api/spotify/search', (req, res) => {
     const searchTerm = req.query.q;
-    searchTracks(searchTerm)
+    Spotify.searchAlbums(searchTerm)
         .then(results => res.json(results))
         .catch(err => res.status(500).send(err));
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-// Set up Spotify API
-Spotify.initializeClient(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET);
 
 // Set up Discord Bot
 const discord = new Discord.Client();
@@ -55,7 +55,6 @@ function sendAlbumEmbed(message, i, albumList) {
         .setDescription(album.artist)
         .setThumbnail(album.image);
     message.edit(albumEmbed).then(sent => {
-        console.log(discord.emojis.values());
         sent.clearReactions()
             .then(sent.react(ARROW_LEFT))
             .then(sent.react(NUM_REACT_MAP[i+1]))
@@ -78,7 +77,7 @@ discord.on('message', msg => {
     const searchTerm = msg.content.slice(searchCommand.length).trim();
     msg.channel.send('Searching for "' + searchTerm + '"')
         .then(sent => {
-            Spotify.searchTracks(searchTerm).then(albums => {
+            Spotify.searchAlbums(searchTerm).then(albums => {
                 sendAlbumEmbed(sent, 0, albums);
             });
         })
