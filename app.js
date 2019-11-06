@@ -18,6 +18,7 @@ const port = 3000;
 
 // configure env
 require('dotenv').config();
+const { DISCORD_BOT_TOKEN } = process.env;
 
 app.get('/', (req, res) => res.send('Hello World!'));
 app.get('/api/spotify/search', (req, res) => {
@@ -77,4 +78,4 @@ client.on('message', msg => {
   }
 });
 
-client.login('NDAwMDI5NzA4OTE1NDQxNjY2.Xa4vwQ.3m0S2ZWp7PPAHLU2S-tYVt3lboU');
+client.login(DISCORD_BOT_TOKEN);
