@@ -1,6 +1,16 @@
+// configure env
+require('dotenv').config();
+const {
+    DISCORD_BOT_TOKEN,
+    SPOTIFY_CLIENT_ID,
+    SPOTIFY_CLIENT_SECRET,
+    PORT
+} = process.env;
+
 const express = require('express');
 const Discord = require('discord.js');
 const Spotify = require('./src/api/spotify');
+const RIFM = require('./src/data/rifmData');
 
 const ARROW_RIGHT = '➡';
 const ARROW_LEFT = '⬅';
@@ -12,26 +22,30 @@ const NUM_REACT_MAP = {
     5: ':five:',
 }
 
-// configure env
-require('dotenv').config();
-const {
-    DISCORD_BOT_TOKEN,
-    SPOTIFY_CLIENT_ID,
-    SPOTIFY_CLIENT_SECRET,
-    PORT
-} = process.env;
-
 // Set up Spotify API
 Spotify.initializeClient(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET);
 
 // Set up express API
 const app = express();
 const port = PORT || 3000;
+app.use(express.json())
 
 app.get('/', (req, res) => res.send('Hello World!'));
 app.get('/api/spotify/search', (req, res) => {
     const searchTerm = req.query.q;
     Spotify.searchAlbums(searchTerm)
+        .then(results => res.json(results))
+        .catch(err => res.status(500).send(err));
+});
+app.get('/api/rifm/albums/:month', (req, res) => {
+    const month = req.params.month;
+    RIFM.getAlbumsForMonth(month)
+        .then(results => res.json(results))
+        .catch(err => res.status(500).send(err));
+});
+app.post('/api/rifm/albums', (req, res) => {
+    const { month, user, album } = req.body;
+    RIFM.putAlbum(month, user, album)
         .then(results => res.json(results))
         .catch(err => res.status(500).send(err));
 });
