@@ -1,6 +1,6 @@
 const express = require('express');
 const Discord = require('discord.js');
-const { searchTracks } = require('./src/api/spotify');
+const Spotify = require('./src/api/spotify');
 
 const ARROW_RIGHT = '➡';
 const ARROW_LEFT = '⬅';
@@ -12,13 +12,17 @@ const NUM_REACT_MAP = {
     5: ':five:',
 }
 
+// configure env
+require('dotenv').config();
+const {
+    DISCORD_BOT_TOKEN,
+    SPOTIFY_CLIENT_ID,
+    SPOTIFY_CLIENT_SECRET
+} = process.env;
+
 // Set up express API
 const app = express();
 const port = 3000;
-
-// configure env
-require('dotenv').config();
-const { DISCORD_BOT_TOKEN } = process.env;
 
 app.get('/', (req, res) => res.send('Hello World!'));
 app.get('/api/spotify/search', (req, res) => {
@@ -30,10 +34,13 @@ app.get('/api/spotify/search', (req, res) => {
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
+// Set up Spotify API
+Spotify.initializeClient(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET);
+
 // Set up Discord Bot
-const client = new Discord.Client();
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+const discord = new Discord.Client();
+discord.on('ready', () => {
+  console.log(`Logged in as ${discord.user.tag}!`);
 });
 
 function sendAlbumEmbed(message, i, albumList) {
@@ -47,7 +54,7 @@ function sendAlbumEmbed(message, i, albumList) {
         .setDescription(album.artist)
         .setThumbnail(album.image);
     message.edit(albumEmbed).then(sent => {
-        console.log(client.emojis.values());
+        console.log(discord.emojis.values());
         sent.clearReactions()
             .then(sent.react(ARROW_LEFT))
             .then(sent.react(NUM_REACT_MAP[i+1]))
@@ -64,13 +71,13 @@ function sendAlbumEmbed(message, i, albumList) {
     });
 }
 
-client.on('message', msg => {
+discord.on('message', msg => {
   const searchCommand = '!search';
   if (msg.content.startsWith(searchCommand)) {
     const searchTerm = msg.content.slice(searchCommand.length).trim();
     msg.channel.send('Searching for "' + searchTerm + '"')
         .then(sent => {
-            searchTracks(searchTerm).then(albums => {
+            Spotify.searchTracks(searchTerm).then(albums => {
                 sendAlbumEmbed(sent, 0, albums);
             });
         })
@@ -78,4 +85,4 @@ client.on('message', msg => {
   }
 });
 
-client.login(DISCORD_BOT_TOKEN);
+discord.login(DISCORD_BOT_TOKEN);

@@ -1,25 +1,27 @@
 const SpotifyWebAPI = require('spotify-web-api-node');
 
-const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } = process.env;
+let spotify;
 
-const spotify = new SpotifyWebAPI({
-    clientId: SPOTIFY_CLIENT_ID,
-    clientSecret: SPOTIFY_CLIENT_SECRET
-});
+function initializeClient(clientID, clientSecret) {
+    spotify = new SpotifyWebAPI({
+        clientId: clientID,
+        clientSecret: clientSecret
+    });
 
-// Retrieve an access token.
-spotify.clientCredentialsGrant().then(
-    function(data) {
-      console.log('The access token expires in ' + data.body['expires_in']);
-      console.log('The access token is ' + data.body['access_token']);
-  
-      // Save the access token so that it's used in future calls
-      spotify.setAccessToken(data.body['access_token']);
-    },
-    function(err) {
-      console.log('Something went wrong when retrieving an access token', err);
-    }
-  );
+    // Retrieve an access token.
+    spotify.clientCredentialsGrant().then(
+        function(data) {
+        console.log('The access token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+    
+        // Save the access token so that it's used in future calls
+        spotify.setAccessToken(data.body['access_token']);
+        },
+        function(err) {
+        console.log('Something went wrong when retrieving an access token', err);
+        }
+    );    
+}
 
 function searchTracks(searchTerm) {
     return new Promise((resolve, reject) => {
@@ -44,4 +46,4 @@ function searchTracks(searchTerm) {
     });
 }
 
-module.exports = { searchTracks };
+module.exports = { initializeClient, searchTracks };
