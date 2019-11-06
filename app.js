@@ -17,12 +17,13 @@ require('dotenv').config();
 const {
     DISCORD_BOT_TOKEN,
     SPOTIFY_CLIENT_ID,
-    SPOTIFY_CLIENT_SECRET
+    SPOTIFY_CLIENT_SECRET,
+    PORT
 } = process.env;
 
 // Set up express API
 const app = express();
-const port = 3000;
+const port = PORT || 3000;
 
 app.get('/', (req, res) => res.send('Hello World!'));
 app.get('/api/spotify/search', (req, res) => {
