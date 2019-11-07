@@ -1,11 +1,11 @@
 import SpotifyWebAPI from 'spotify-web-api-node';
 
-export interface ISpotifyAlbumInfo {
+export type SpotifyAlbumInfo = {
     id: string;
     name: string;
     image: string;
     url: string;
-}
+};
 
 export class SpotifyAPI {
 
@@ -20,19 +20,19 @@ export class SpotifyAPI {
         // Retrieve an access token.
         this.api.clientCredentialsGrant().then(
             (data) => {
-            console.log('The access token expires in ' + data.body.expires_in);
-            console.log('The access token is ' + data.body.access_token);
+                console.log('The access token expires in ' + data.body.expires_in);
+                console.log('The access token is ' + data.body.access_token);
 
-            // Save the access token so that it's used in future calls
-            this.api.setAccessToken(data.body.access_token);
+                // Save the access token so that it's used in future calls
+                this.api.setAccessToken(data.body.access_token);
             },
             (err) => {
-            console.log('Something went wrong when retrieving an access token', err);
+                console.log('Something went wrong when retrieving an access token', err);
             },
         );
     }
 
-    public searchAlbums(searchTerm: string): Promise<ISpotifyAlbumInfo[]> {
+    public searchAlbums(searchTerm: string): Promise<SpotifyAlbumInfo[]> {
         return new Promise((resolve, reject) => {
             this.api.searchAlbums(searchTerm, {limit: 5})
                 .then((data) => {

@@ -10,7 +10,7 @@ const {
 
 import Discord from 'discord.js';
 import express from 'express';
-import { ISpotifyAlbumInfo, SpotifyAPI } from './api/spotify';
+import { SpotifyAlbumInfo, SpotifyAPI } from './api/spotify';
 import { RIFMData } from './data/rifmData';
 
 const ARROW_RIGHT = '➡';
@@ -60,7 +60,7 @@ discord.on('ready', () => {
   console.log(`Logged in as ${discord.user.tag}!`);
 });
 
-function sendAlbumEmbed(message: Discord.Message, i: number, albumList: ISpotifyAlbumInfo[]) {
+function sendAlbumEmbed(message: Discord.Message, i: number, albumList: SpotifyAlbumInfo[]) {
     const filter = (reaction: Discord.MessageReaction, user: Discord.User) => user.id !== message.author.id &&
         [ARROW_LEFT, ARROW_RIGHT].includes(reaction.emoji.name);
     const album = albumList[i];

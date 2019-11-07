@@ -1,15 +1,15 @@
 import AWS, { DynamoDB } from 'aws-sdk';
 
-export interface IAlbumPick {
+export type AlbumPick = {
     month: string;
     user: string;
-    album: IAlbumInfo;
-}
+    album: AlbumInfo;
+};
 
-export interface IAlbumInfo {
+export type AlbumInfo = {
     title: string;
     artist: string;
-}
+};
 
 export class RIFMData {
     private dynamodb: DynamoDB;
@@ -18,7 +18,7 @@ export class RIFMData {
         this.dynamodb = new AWS.DynamoDB();
     }
 
-    public getAlbumsForMonth(month: string): Promise<IAlbumPick[]> {
+    public getAlbumsForMonth(month: string): Promise<AlbumPick[]> {
         return new Promise((resolve, reject) => {
             const params = {
                 ExpressionAttributeValues: {
@@ -51,7 +51,7 @@ export class RIFMData {
         });
     }
 
-    public putAlbum(month: string, user: string, album: IAlbumInfo) {
+    public putAlbum(month: string, user: string, album: AlbumInfo) {
         return new Promise((resolve, reject) => {
             const params = {
                 Item: {
