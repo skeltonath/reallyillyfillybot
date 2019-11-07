@@ -1,7 +1,7 @@
 {
   "name": "RIFMBot",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "dist/app.js",
   "author": "skeltonath@gmail.com",
   "license": "MIT",
   "dependencies": {
@@ -12,6 +12,13 @@
     "spotify-web-api-node": "^4.0.0"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "tsc && node dist/app.js"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.2",
+    "@types/node": "^12.12.6",
+    "@types/spotify-web-api-node": "^4.0.1",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2"
   }
 }
