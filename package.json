@@ -12,6 +12,7 @@
     "spotify-web-api-node": "^4.0.0"
   },
   "scripts": {
+    "local": "tsc && node dist/app.js",
     "start": "node dist/app.js",
     "build": "tsc"
   },

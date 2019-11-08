@@ -11,7 +11,7 @@ export type AlbumInfo = {
     artist: string;
 };
 
-export class RIFMData {
+export class RifmDAO {
     private dynamodb: DynamoDB;
 
     constructor() {
