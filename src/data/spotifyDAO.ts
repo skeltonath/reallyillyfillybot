@@ -8,7 +8,6 @@ export type SpotifyAlbumInfo = {
 };
 
 export class SpotifyDAO {
-
     private api: SpotifyWebAPI;
 
     constructor(clientId: string, clientSecret: string) {

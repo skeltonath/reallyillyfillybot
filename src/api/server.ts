@@ -3,15 +3,8 @@ import { RifmDAO } from '../data/rifmDAO';
 import { SpotifyDAO } from '../data/spotifyDAO';
 
 export class APIServer {
-    private port: string;
-    private spotify: SpotifyDAO;
-    private rifm: RifmDAO;
 
-    constructor(port: string, spotify: SpotifyDAO, rifm: RifmDAO) {
-        this.port = port || '3000';
-        this.spotify = spotify;
-        this.rifm = rifm;
-    }
+    constructor(private port: string = '3000', private spotify: SpotifyDAO, private rifm: RifmDAO) {}
 
     public start() {
         const app = express();
