@@ -7,8 +7,7 @@ export type SpotifyAlbumInfo = {
     url: string;
 };
 
-export class SpotifyAPI {
-
+export class SpotifyDAO {
     private api: SpotifyWebAPI;
 
     constructor(clientId: string, clientSecret: string) {
@@ -20,8 +19,11 @@ export class SpotifyAPI {
         // Retrieve an access token.
         this.api.clientCredentialsGrant().then(
             (data) => {
-                console.log('The access token expires in ' + data.body.expires_in);
-                console.log('The access token is ' + data.body.access_token);
+                console.log('Spotify access token expires in ' + data.body.expires_in);
+                console.log('Spotify access token is ' + data.body.access_token);
+                setTimeout(() => {
+                    console.log('Spotify access token expired!');
+                }, data.body.expires_in * 1000);
 
                 // Save the access token so that it's used in future calls
                 this.api.setAccessToken(data.body.access_token);
@@ -35,21 +37,21 @@ export class SpotifyAPI {
     public searchAlbums(searchTerm: string): Promise<SpotifyAlbumInfo[]> {
         return new Promise((resolve, reject) => {
             this.api.searchAlbums(searchTerm, {limit: 5})
-                .then((data) => {
-                    const albums = data.body.albums.items.map((item) => {
-                        return {
-                            id: item.id,
-                            name: item.name,
-                            // artist: item.artists[0].name,
-                            image: item.images[2].url,
-                            url: item.external_urls.spotify,
-                        };
-                    });
-                    resolve(albums);
-                }, (err) => {
-                    console.error(err);
-                    reject(err);
+            .then((data) => {
+                const albums = data.body.albums.items.map((item) => {
+                    return {
+                        id: item.id,
+                        name: item.name,
+                        // artist: item.artists[0].name,
+                        image: item.images[2].url,
+                        url: item.external_urls.spotify,
+                    };
                 });
+                resolve(albums);
+            }, (err) => {
+                console.error(err);
+                reject(err);
+            });
         });
     }
 }
