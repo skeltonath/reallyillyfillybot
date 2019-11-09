@@ -9,7 +9,7 @@ const NUM_REACT_MAP = {
     2: ':two:',
     3: ':three:',
     4: ':four:',
-    5: ':five:',
+    5: ':five:'
 };
 
 export class DiscordBot {
