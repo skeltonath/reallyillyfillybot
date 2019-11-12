@@ -31,7 +31,7 @@ export class SpotifyDAO {
                 // Recursively refetch after the duration of 'expires_in' - 1m buffer period
                 setTimeout(() => {
                     this.fetchAccessToken();
-                }, data.body.expires_in * 1000 - 60000);
+                }, (data.body.expires_in - 60) * 1000);
             },
             (err) => {
                 console.log('Something went wrong when retrieving a spotify access token', err);
