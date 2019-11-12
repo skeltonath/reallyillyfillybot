@@ -1,5 +1,7 @@
 import AWS, { DynamoDB } from 'aws-sdk';
 
+const TABLE_NAME = 'rifm';
+
 export type AlbumPick = {
     month: string;
     user: string;
@@ -30,7 +32,7 @@ export class RifmDAO {
                     '#month_key': 'month',
                 },
                 KeyConditionExpression: '#month_key = :v1',
-                TableName: 'rifm',
+                TableName: TABLE_NAME,
             };
             this.dynamodb.query(params, (err, data) => {
                 if (err) {
@@ -60,7 +62,7 @@ export class RifmDAO {
                     albumTitle: { S: album.title },
                     albumArtist: { S: album.artist },
                 },
-                TableName: 'rifm',
+                TableName: TABLE_NAME,
             };
             this.dynamodb.putItem(params, (err, data) => {
                 if (err) {
