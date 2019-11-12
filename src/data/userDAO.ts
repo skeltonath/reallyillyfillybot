@@ -20,7 +20,7 @@ export class UserDAO {
         return new Promise((resolve, reject) => {
             const params = {
                 Key: { id: { S: id } },
-                TableName: TABLE_NAME,
+                TableName: TABLE_NAME
             };
             this.dynamodb.getItem(params, (err, data) => {
                 if (err) {
@@ -31,7 +31,7 @@ export class UserDAO {
                     id: data.Item.id.S,
                     name: data.Item.name.S,
                     accessToken: data.Item.accessToken.S,
-                    refreshToken: data.Item.refreshToken.S,
+                    refreshToken: data.Item.refreshToken.S
                 });
             });
         });
