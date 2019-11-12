@@ -2,6 +2,7 @@ import express from 'express';
 import { RifmDAO } from '../data/rifmDAO';
 import { SpotifyDAO } from '../data/spotifyDAO';
 
+
 export class APIServer {
 
     constructor(private port: string = '3000', private spotify: SpotifyDAO, private rifm: RifmDAO) {}

@@ -4,14 +4,15 @@ import { DiscordBot } from './bot/bot';
 import { RifmDAO } from './data/rifmDAO';
 import { SpotifyDAO } from './data/spotifyDAO';
 
-// configure env
+// Configure env
 env.config();
 const {
     DISCORD_BOT_TOKEN,
     SPOTIFY_CLIENT_ID,
     SPOTIFY_CLIENT_SECRET,
-    PORT,
+    PORT
 } = process.env;
+
 
 // Set up data accessors
 const spotify = new SpotifyDAO(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET);

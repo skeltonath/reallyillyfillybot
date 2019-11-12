@@ -13,7 +13,7 @@ export class SpotifyDAO {
     constructor(clientId: string, clientSecret: string) {
         this.api = new SpotifyWebAPI({
             clientId,
-            clientSecret,
+            clientSecret
         });
 
         this.fetchAccessToken();
@@ -25,7 +25,7 @@ export class SpotifyDAO {
                 console.log('Spotify access token expires in ' + data.body.expires_in);
                 console.log('Spotify access token is ' + data.body.access_token);
 
-                // Save the access token so that it's used in future calls
+                // Save the access token so that it"s used in future calls
                 this.api.setAccessToken(data.body.access_token);
 
                 // Recursively refetch after the duration of 'expires_in' - 1m buffer period
@@ -49,7 +49,7 @@ export class SpotifyDAO {
                         name: item.name,
                         // artist: item.artists[0].name,
                         image: item.images[2].url,
-                        url: item.external_urls.spotify,
+                        url: item.external_urls.spotify
                     };
                 });
                 resolve(albums);
