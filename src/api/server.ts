@@ -7,13 +7,14 @@ import { RifmDAO } from '../data/rifmDAO';
 import { SpotifyDAO } from '../data/spotifyDAO';
 import { User, UserDAO } from '../data/userDAO';
 
+
 export class APIServer {
 
     constructor(
         private port: string = '3000',
         private spotify: SpotifyDAO,
         private rifm: RifmDAO,
-        private users: UserDAO,
+        private users: UserDAO
     ) {}
 
     public start() {
@@ -22,7 +23,7 @@ export class APIServer {
             tokenURL: 'https://discordapp.com/api/oauth2/token',
             clientID: '400029708915441666',
             clientSecret: 'h0I_7SDVARBQn_v1Zf14cJNVsM1yhGMm',
-            callbackURL: 'http://localhost:3000/auth/discord/callback',
+            callbackURL: 'http://localhost:3000/auth/discord/callback'
         }, (accessToken, refreshToken, profile, done) => {
             console.log('accessToken:', accessToken);
             console.log('refreshToken:', refreshToken);
@@ -30,7 +31,7 @@ export class APIServer {
             done(null, {
                 id: '1',
                 accessToken,
-                refreshToken,
+                refreshToken
             });
         }));
 
@@ -49,7 +50,7 @@ export class APIServer {
         app.use(session({
             secret: 'keyboard cat',
             resave: false,
-            saveUninitialized: true,
+            saveUninitialized: true
         }));
         app.use(bodyParser.urlencoded({ extended: false }));
         app.use(passport.initialize());

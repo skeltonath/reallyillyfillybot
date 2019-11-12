@@ -25,14 +25,14 @@ export class RifmDAO {
             const params = {
                 ExpressionAttributeValues: {
                     ':v1': {
-                        S: month,
-                    },
+                        S: month
+                    }
                 },
                 ExpressionAttributeNames: {
-                    '#month_key': 'month',
+                    '#month_key': 'month'
                 },
                 KeyConditionExpression: '#month_key = :v1',
-                TableName: TABLE_NAME,
+                TableName: TABLE_NAME
             };
             this.dynamodb.query(params, (err, data) => {
                 if (err) {
@@ -45,8 +45,8 @@ export class RifmDAO {
                         user: item.user.S,
                         album: {
                             title: item.albumTitle.S,
-                            artist: item.albumArtist.S,
-                        },
+                            artist: item.albumArtist.S
+                        }
                     };
                 }));
             });
@@ -60,9 +60,9 @@ export class RifmDAO {
                     month: { S: month },
                     user: { S: user },
                     albumTitle: { S: album.title },
-                    albumArtist: { S: album.artist },
+                    albumArtist: { S: album.artist }
                 },
-                TableName: TABLE_NAME,
+                TableName: TABLE_NAME
             };
             this.dynamodb.putItem(params, (err, data) => {
                 if (err) {

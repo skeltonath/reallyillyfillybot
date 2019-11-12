@@ -12,8 +12,9 @@ const {
     DISCORD_BOT_TOKEN,
     SPOTIFY_CLIENT_ID,
     SPOTIFY_CLIENT_SECRET,
-    PORT,
+    PORT
 } = process.env;
+
 
 // Set up data accessors
 const spotify = new SpotifyDAO(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET);
