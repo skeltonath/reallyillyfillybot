@@ -1,5 +1,10 @@
 import SpotifyWebAPI from 'spotify-web-api-node';
 
+const {
+    SPOTIFY_CLIENT_ID,
+    SPOTIFY_CLIENT_SECRET
+} = process.env;
+
 export type SpotifyAlbumInfo = {
     id: string;
     name: string;
@@ -10,10 +15,10 @@ export type SpotifyAlbumInfo = {
 export class SpotifyDAO {
     private api: SpotifyWebAPI;
 
-    constructor(clientId: string, clientSecret: string) {
+    constructor() {
         this.api = new SpotifyWebAPI({
-            clientId,
-            clientSecret
+            clientId: SPOTIFY_CLIENT_ID,
+            clientSecret: SPOTIFY_CLIENT_SECRET
         });
 
         this.fetchAccessToken();

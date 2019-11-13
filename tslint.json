@@ -25,7 +25,6 @@
         "object-literal-sort-keys": false,
         "object-literal-key-quotes": false,
         "one-line": false,
-        "ordered-imports": false,
         "quotemark": [ true, "single" ],
         "semicolon": true,
         "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
