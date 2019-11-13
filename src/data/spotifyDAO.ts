@@ -21,20 +21,25 @@ export class SpotifyDAO {
             clientSecret: SPOTIFY_CLIENT_SECRET
         });
 
-        // Retrieve an access token.
+        this.fetchAccessToken();
+    }
+
+    private async fetchAccessToken() {
         this.api.clientCredentialsGrant().then(
             (data) => {
                 console.log('Spotify access token expires in ' + data.body.expires_in);
                 console.log('Spotify access token is ' + data.body.access_token);
-                setTimeout(() => {
-                    console.log('Spotify access token expired!');
-                }, data.body.expires_in * 1000);
 
                 // Save the access token so that it"s used in future calls
                 this.api.setAccessToken(data.body.access_token);
+
+                // Recursively refetch after the duration of 'expires_in' - 1m buffer period
+                setTimeout(() => {
+                    this.fetchAccessToken();
+                }, (data.body.expires_in - 60) * 1000);
             },
             (err) => {
-                console.log('Something went wrong when retrieving an access token', err);
+                console.log('Something went wrong when retrieving a spotify access token', err);
             }
         );
     }
