@@ -1,7 +1,7 @@
 import Discord from 'discord.js';
-import { RifmDAO } from '../data/rifmDAO';
 import { SpotifyAlbumInfo, SpotifyDAO } from '../data/spotifyDAO';
 
+const { DISCORD_BOT_TOKEN } = process.env;
 const ARROW_RIGHT = '➡';
 const ARROW_LEFT = '⬅';
 const NUM_REACT_MAP = {
@@ -14,14 +14,10 @@ const NUM_REACT_MAP = {
 
 export class DiscordBot {
     private discord: Discord.Client;
-    private token: string;
     private spotify: SpotifyDAO;
-    private rifm: RifmDAO;
 
-    constructor(token: string, spotify: SpotifyDAO, rifm: RifmDAO) {
-        this.token = token;
+    constructor(spotify: SpotifyDAO) {
         this.spotify = spotify;
-        this.rifm = rifm;
         this.discord = new Discord.Client();
     }
 
@@ -44,7 +40,7 @@ export class DiscordBot {
             }
         });
 
-        this.discord.login(this.token);
+        this.discord.login(DISCORD_BOT_TOKEN);
     }
 
     private sendAlbumEmbed(message: Discord.Message, i: number, albumList: SpotifyAlbumInfo[]) {

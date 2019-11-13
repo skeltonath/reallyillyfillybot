@@ -2,7 +2,7 @@
     "restartable": "rs",
     "verbose": false,
     "execMap": {
-      "ts": "node --require ts-node/register"
+      "ts": "node --require ts-node/register --require dotenv/config"
     },
     "watch": ["src/"],
     "env": {
