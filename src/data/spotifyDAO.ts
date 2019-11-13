@@ -1,3 +1,4 @@
+import pino from 'pino';
 import SpotifyWebAPI from 'spotify-web-api-node';
 
 export type SpotifyAlbumInfo = {
@@ -7,10 +8,15 @@ export type SpotifyAlbumInfo = {
     url: string;
 };
 
+interface ILogger {
+    error: (...args: any) => void;
+    info: (...args: any) => void;
+}
+
 export class SpotifyDAO {
     private api: SpotifyWebAPI;
 
-    constructor(clientId: string, clientSecret: string) {
+    constructor(clientId: string, clientSecret: string, private logger: ILogger = pino()) {
         this.api = new SpotifyWebAPI({
             clientId,
             clientSecret
@@ -22,8 +28,8 @@ export class SpotifyDAO {
     private async fetchAccessToken() {
         this.api.clientCredentialsGrant().then(
             (data) => {
-                console.log('Spotify access token expires in ' + data.body.expires_in);
-                console.log('Spotify access token is ' + data.body.access_token);
+                this.logger.info('Spotify access token expires in ' + data.body.expires_in);
+                this.logger.info('Spotify access token is ' + data.body.access_token);
 
                 // Save the access token so that it"s used in future calls
                 this.api.setAccessToken(data.body.access_token);
@@ -34,7 +40,7 @@ export class SpotifyDAO {
                 }, (data.body.expires_in - 60) * 1000);
             },
             (err) => {
-                console.log('Something went wrong when retrieving a spotify access token', err);
+                this.logger.error('Something went wrong when retrieving a spotify access token', err);
             }
         );
     }
@@ -54,7 +60,7 @@ export class SpotifyDAO {
                 });
                 resolve(albums);
             }, (err) => {
-                console.error(err);
+                this.logger.error(err);
                 reject(err);
             });
         });

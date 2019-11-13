@@ -1,3 +1,4 @@
+import pino from 'pino';
 import AWS, { DynamoDB } from 'aws-sdk';
 
 export type AlbumPick = {
@@ -11,10 +12,15 @@ export type AlbumInfo = {
     artist: string;
 };
 
+interface ILogger {
+    error: (...args: any) => void;
+    info: (...args: any) => void;
+}
+
 export class RifmDAO {
     private dynamodb: DynamoDB;
 
-    constructor() {
+    constructor(private logger: ILogger = pino()) {
         this.dynamodb = new AWS.DynamoDB();
     }
 
@@ -34,7 +40,7 @@ export class RifmDAO {
             };
             this.dynamodb.query(params, (err, data) => {
                 if (err) {
-                    console.log(err, err.stack);
+                    this.logger.error(err);
                     reject(err);
                 }
                 resolve(data.Items.map((item) => {
@@ -64,7 +70,7 @@ export class RifmDAO {
             };
             this.dynamodb.putItem(params, (err, data) => {
                 if (err) {
-                    console.log(err, err.stack);
+                    this.logger.error(err);
                     reject(err);
                 }
                 resolve(data);

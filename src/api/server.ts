@@ -1,14 +1,19 @@
 import express from 'express';
+import pino from 'pino';
+import pinoExpress from 'express-pino-logger';
 import { RifmDAO } from '../data/rifmDAO';
 import { SpotifyDAO } from '../data/spotifyDAO';
 
+const logger: pino.Logger = pino();
 
 export class APIServer {
 
-    constructor(private port: string = '3000', private spotify: SpotifyDAO, private rifm: RifmDAO) {}
+    constructor(private port: string = '3001', private spotify: SpotifyDAO, private rifm: RifmDAO) {}
 
     public start() {
         const app = express();
+
+        app.use(pinoExpress());
         app.use(express.json());
 
         app.get('/', (req, res) => res.send('Hello World!'));
@@ -31,6 +36,6 @@ export class APIServer {
             .catch((err) => res.status(500).send(err));
         });
 
-        app.listen(this.port, () => console.log(`Example app listening on port ${this.port}!`));
+        app.listen(this.port, () => logger.info(`Server listening on port ${this.port}!`));
     }
 }
