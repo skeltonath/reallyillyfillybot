@@ -24,10 +24,11 @@ Next you'll need to obtain credentials for the services used in the project and 
 ### Discord
 1. Create a developer account [here](https://discordapp.com/developers/applications/).
 2. Create a new application.
-3. In the sidebar, go to the "Bot" tab.
-4. Add a "Bot User" to your application.
-5. Copy the Token into your `.env` file.
-6. Follow this [small guide](https://discordapp.com/developers/docs/topics/oauth2#bot-authorization-flow) to add your bot to the Discord server of your choice.
+3. Copy the Client ID and Client Secret into your `.env` file.
+4. In the sidebar, go to the "Bot" tab.
+5. Add a "Bot User" to your application.
+6. Copy the Token into your `.env` file.
+7. Follow this [small guide](https://discordapp.com/developers/docs/topics/oauth2#bot-authorization-flow) to add your bot to the Discord server of your choice.
 
 ### AWS
 1. Create an AWS account.
