@@ -1,4 +1,5 @@
 import Discord from 'discord.js';
+import pino from 'pino';
 import { RifmDAO } from '../data/rifmDAO';
 import { SpotifyAlbumInfo, SpotifyDAO } from '../data/spotifyDAO';
 
@@ -12,13 +13,15 @@ const NUM_REACT_MAP = {
     5: ':five:'
 };
 
+interface ILogger {
+    error: (...args: any) => void;
+    info: (...args: any) => void;
+}
+
 export class DiscordBot {
     private discord: Discord.Client;
-    private token: string;
-    private spotify: SpotifyDAO;
-    private rifm: RifmDAO;
 
-    constructor(token: string, spotify: SpotifyDAO, rifm: RifmDAO) {
+    constructor(private token: string, private spotify: SpotifyDAO, private rifm: RifmDAO, private logger: ILogger = pino()) {
         this.token = token;
         this.spotify = spotify;
         this.rifm = rifm;
@@ -27,7 +30,7 @@ export class DiscordBot {
 
     public start() {
         this.discord.on('ready', () => {
-            console.log(`Logged in as ${this.discord.user.tag}!`);
+            this.logger.info(`Logged in as ${this.discord.user.tag}!`);
         });
 
         this.discord.on('message', (msg) => {
